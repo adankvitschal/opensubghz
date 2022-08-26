@@ -1,0 +1,22 @@
+v {xschem version=3.0.0 file_version=1.2 }
+G {}
+K {name=bias_subckt
+type=subcircuit
+format="@name @pinlist @symname"
+template="name=X1"}
+V {}
+S {}
+E {}
+L 4 20 -20 40 -20 {}
+L 4 0 -50 0 -30 {}
+L 4 0 30 0 50 {}
+B 4 -20 -30 20 30 {}
+B 5 37.5 -22.5 42.5 -17.5 {name=mixer_b1
+dir=out}
+B 5 -2.5 -52.5 2.5 -47.5 {name=vdd
+dir=inout}
+B 5 -2.5 47.5 2.5 52.5 {name=gnd
+dir=inout}
+T {mixer_b1} 30 -50 0 0 0.4 0.4 {}
+T {vdd} -50 -60 0 0 0.4 0.4 {}
+T {gnd} -50 30 0 0 0.4 0.4 {}
