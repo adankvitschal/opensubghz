@@ -58,6 +58,8 @@ for vds in vdsvalues:
     gmid_ratio = gm/ids;
 
     gmid_max = np.amax(gmid_ratio);
+    gmid_max_index = np.where(gmid_ratio == gmid_max)[0][0]
+    print('gmid_max_index = {}'.format(gmid_max_index))
     slope_factor = 1/(vt*gmid_max)
     print('gm_max='+str(gmid_max)+', slope_factor='+str(slope_factor))
 
@@ -73,15 +75,14 @@ for vds in vdsvalues:
 
     # ==================
     # get gmid_ratio feasible range
-    absolute_diff_start = np.abs(gmid_ratio - (gmid_max*0.8))
-    absolute_diff_end = np.abs(gmid_ratio - (gmid_max*0.1))
-    gmid_start_index = absolute_diff_start.argmin()
-    gmid_end_index = absolute_diff_end.argmin()
+    absolute_diff_start = np.abs(gmid_ratio[gmid_max_index:] - (gmid_max*0.8))
+    absolute_diff_end = np.abs(gmid_ratio[gmid_max_index:] - (gmid_max*0.1))
+    gmid_start_index = absolute_diff_start.argmin()+gmid_max_index
+    gmid_end_index = absolute_diff_end.argmin()+gmid_max_index
     print('feasible gmid range start='
             + str(gmid_ratio[gmid_start_index])
             + ' end='
             + str(gmid_ratio[gmid_end_index]))
-
 
 #    print('start index: '+str(gmid_start_index))
 #    print('end index: '+str(gmid_end_index))
