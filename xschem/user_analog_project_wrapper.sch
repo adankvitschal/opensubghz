@@ -1,4 +1,4 @@
-v {xschem version=2.9.9 file_version=1.2 }
+v {xschem version=3.0.0 file_version=1.2 }
 G {}
 K {}
 V {}
@@ -52,7 +52,7 @@ N 3670 850 3670 870 { lab=io_oeb[16]}
 N 3670 930 3670 940 { lab=vssd1}
 N 4160 710 4160 740 { lab=io_oeb[11]}
 N 4160 800 4160 820 { lab=vssd1}
-N 4160 850 4160 870 { lab=#net1}
+N 4160 850 4160 870 { lab=io_oeb[15]}
 N 4160 930 4160 940 { lab=vssd1}
 N 3630 710 3670 710 { lab=io_oeb[12]}
 N 3630 830 3670 830 { lab=vssd1}
@@ -60,8 +60,80 @@ N 3630 850 3670 850 { lab=io_oeb[16]}
 N 3630 940 3670 940 { lab=vssd1}
 N 4130 710 4160 710 { lab=io_oeb[11]}
 N 4130 820 4160 820 { lab=vssd1}
-N 4130 850 4160 850 { lab=#net1}
+N 4130 850 4160 850 { lab=io_oeb[15]}
 N 4130 940 4160 940 { lab=vssd1}
+N 3810 -770 3870 -770 {
+lab=vdda1}
+N 3870 -770 3870 -740 {
+lab=vdda1}
+N 3840 -600 3870 -600 {
+lab=vssa1}
+N 3870 -640 3870 -600 {
+lab=vssa1}
+N 3910 -710 4000 -710 {
+lab=gpio_analog[1]}
+N 4740 390 4780 390 {
+lab=#net1}
+N 4780 390 4820 450 {
+lab=#net1}
+N 4820 450 4860 450 {
+lab=#net1}
+N 4820 390 4860 390 {
+lab=#net2}
+N 4780 450 4820 390 {
+lab=#net2}
+N 4740 450 4780 450 {
+lab=#net2}
+N 4640 550 4640 590 {
+lab=io_analog[1]}
+N 4640 590 4960 590 {
+lab=io_analog[1]}
+N 4960 550 4960 590 {
+lab=io_analog[1]}
+N 5060 390 5150 390 {
+lab=#net3}
+N 5060 450 5150 450 {
+lab=#net4}
+N 4800 590 4800 650 {
+lab=io_analog[1]}
+N 4470 390 4540 390 {
+lab=#net4}
+N 4470 130 4470 390 {
+lab=#net4}
+N 4470 130 5090 130 {
+lab=#net4}
+N 5090 130 5090 450 {
+lab=#net4}
+N 4480 450 4540 450 {
+lab=#net3}
+N 4480 140 4480 450 {
+lab=#net3}
+N 4480 140 5100 140 {
+lab=#net3}
+N 5100 140 5100 390 {
+lab=#net3}
+N 4830 0 4830 390 {
+lab=#net2}
+N 4770 0 4770 390 {
+lab=#net1}
+N 5150 0 5150 390 {
+lab=#net3}
+N 5210 0 5210 450 {
+lab=#net4}
+N 5150 450 5210 450 {
+lab=#net4}
+N 4770 -340 4770 -0 {}
+N 4830 -340 4830 0 {}
+N 4900 -460 5420 -460 {}
+N 4900 -410 5420 -410 {}
+N 5290 -120 5410 -120 {}
+N 5280 -70 5410 -70 {}
+N 4540 -460 4700 -460 {}
+N 4540 -410 4700 -410 {}
+N 4660 -120 5080 -120 {}
+N 4640 -70 5080 -70 {}
+N 4640 -410 4640 -70 {}
+N 4660 -460 4660 -120 {}
 C {example_por.sym} 3860 -310 0 0 {name=x1}
 C {example_por.sym} 3860 20 0 0 {name=x2}
 C {devices/iopin.sym} 3240 -470 0 0 {name=p1 lab=vdda1}
@@ -178,3 +250,24 @@ C {devices/lab_pin.sym} 3630 830 0 0 {name=l29 sig_type=std_logic lab=vssd1}
 C {devices/lab_pin.sym} 3630 940 0 0 {name=l30 sig_type=std_logic lab=vssd1}
 C {devices/lab_pin.sym} 4130 820 0 0 {name=l31 sig_type=std_logic lab=vssd1}
 C {devices/lab_pin.sym} 4130 940 0 0 {name=l32 sig_type=std_logic lab=vssd1}
+C {opensubghz/xschem/bias.sym} 3870 -690 0 0 {name=X1}
+C {devices/lab_pin.sym} 3810 -770 0 0 {name=l33 sig_type=std_logic lab=vdda1}
+C {devices/lab_pin.sym} 3840 -600 0 0 {name=l34 sig_type=std_logic lab=vssa1}
+C {devices/lab_pin.sym} 4000 -710 0 1 {name=l35 sig_type=std_logic lab=gpio_analog[1]}
+C {opensubghz/xschem/half_qvco.sym} 4640 420 0 0 {name=X4}
+C {opensubghz/xschem/half_qvco.sym} 4960 420 0 0 {name=X5}
+C {devices/lab_pin.sym} 4800 650 1 1 {name=l40 sig_type=std_logic lab=io_analog[1]}
+C {devices/lab_pin.sym} 4640 260 1 0 {name=l41 sig_type=std_logic lab=vssa1}
+C {devices/lab_pin.sym} 4960 260 1 0 {name=l42 sig_type=std_logic lab=vssa1}
+C {devices/lab_pin.sym} 4610 260 1 0 {name=l43 sig_type=std_logic lab=vdda1}
+C {devices/lab_pin.sym} 4930 260 1 0 {name=l44 sig_type=std_logic lab=vdda1}
+C {devices/lab_pin.sym} 4670 260 3 1 {name=l45 sig_type=std_logic lab=gpio_analog[1]}
+C {devices/lab_pin.sym} 4990 260 3 1 {name=l46 sig_type=std_logic lab=gpio_analog[1]}
+C {devices/lab_pin.sym} 4770 -540 3 1 {name=l47 sig_type=std_logic lab=gpio_analog[1]}
+C {devices/lab_pin.sym} 5150 -200 3 1 {name=l48 sig_type=std_logic lab=gpio_analog[1]}
+C {devices/lab_pin.sym} 4830 -540 1 0 {name=l49 sig_type=std_logic lab=vssa1}
+C {devices/lab_pin.sym} 4800 -540 1 0 {name=l50 sig_type=std_logic lab=vdda1}
+C {devices/lab_pin.sym} 5210 -200 1 0 {name=l51 sig_type=std_logic lab=vssa1}
+C {devices/lab_pin.sym} 5180 -200 1 0 {name=l52 sig_type=std_logic lab=vdda1}
+C {opensubghz/xschem/mixer_final.sym} 4800 -430 0 0 {name=X2}
+C {opensubghz/xschem/mixer_final.sym} 5180 -90 0 0 {name=X3}

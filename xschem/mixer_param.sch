@@ -4,10 +4,10 @@ K {}
 V {}
 S {}
 E {}
-N 3110 -70 3110 -40 {
+N 3110 20 3110 50 {
 lab=gnd}
-N 3030 -100 3070 -100 {
-lab=bias}
+N 3030 -10 3070 -10 {
+lab=b1}
 N 3110 -210 3200 -210 {
 lab=cm1}
 N 3020 -210 3110 -210 {
@@ -82,6 +82,9 @@ N 3300 -540 3330 -540 {
 lab=gnd}
 N 2820 -540 2850 -540 {
 lab=gnd}
+N 3110 -70 3110 -40 {
+lab=cm0}
+N 3110 -130 3110 -70 {}
 C {devices/ipin.sym} 2790 -420 0 0 {name=p1 lab=LOp
 }
 C {devices/ipin.sym} 2940 -260 0 0 {name=p2 lab=RFp
@@ -90,9 +93,9 @@ C {devices/ipin.sym} 3280 -260 0 1 {name=p5 lab=RFn
 }
 C {devices/ipin.sym} 3110 -390 1 1 {name=p7 lab=LOn
 }
-C {devices/ipin.sym} 3030 -100 2 1 {name=p8 lab=bias
+C {devices/ipin.sym} 3030 -10 2 1 {name=p8 lab=b1
 }
-C {devices/iopin.sym} 3110 -40 0 0 {name=p9 lab=gnd}
+C {devices/iopin.sym} 3110 50 0 0 {name=p9 lab=gnd}
 C {devices/iopin.sym} 3110 -620 0 0 {name=p10 lab=vdd}
 C {devices/lab_pin.sym} 3430 -420 0 1 {name=l1 sig_type=std_logic lab=LOp}
 C {devices/opin.sym} 2830 -480 0 1 {name=p3 lab=IFp}
@@ -112,7 +115,7 @@ sa=0 sb=0 sd=0
 model=nfet_01v8
 spiceprefix=X
 }
-C {sky130_fd_pr/nfet3_01v8.sym} 3090 -100 0 0 {name=M1
+C {sky130_fd_pr/nfet3_01v8.sym} 3090 -10 0 0 {name=M1
 L=0.15
 W="'bias_width*mixer_biasfactor'"
 body=GND
@@ -210,15 +213,16 @@ C {devices/vsource.sym} 3200 -320 0 0 {name=Vscm2b value="dc 0"}
 C {devices/vsource.sym} 3020 -320 0 0 {name=Vscm2a value="dc 0"}
 C {devices/lab_pin.sym} 2820 -540 0 0 {name=l2 sig_type=std_logic lab=gnd}
 C {devices/lab_pin.sym} 3300 -540 0 0 {name=l3 sig_type=std_logic lab=gnd}
-C {sky130_fd_pr/res_xhigh_po_5p73.sym} 2870 -540 0 0 {name=R1
-W=5.73
+C {devices/lab_pin.sym} 3110 -50 2 0 {name=l7 sig_type=std_logic lab=cm0}
+C {sky130_fd_pr/res_high_po_2p85.sym} 2870 -540 0 0 {name=R1
+W=2.85
 L="'mixer_rl'"
-model=res_xhigh_po_5p73
+model=res_high_po_2p85
 spiceprefix=X
 mult=1}
-C {sky130_fd_pr/res_xhigh_po_5p73.sym} 3350 -540 0 0 {name=R2
-W=5.73
+C {sky130_fd_pr/res_high_po_2p85.sym} 3350 -540 0 0 {name=R2
+W=2.85
 L="'mixer_rl'"
-model=res_xhigh_po_5p73
+model=res_high_po_2p85
 spiceprefix=X
 mult=1}
