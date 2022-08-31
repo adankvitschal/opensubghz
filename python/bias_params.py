@@ -1,2 +1,3 @@
-refCurrentWidth = 3
-refCurrent = 45e-6
+refCurrentWidth = 5
+refCurrentLength=0.15
+refCurrent = 106e-6
