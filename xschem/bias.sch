@@ -14,8 +14,6 @@ N -60 -100 -60 -80 {
 lab=vdd}
 N -60 140 -60 160 {
 lab=gnd}
-N -120 -50 -80 -50 {
-lab=gnd}
 N -0 0 0 50 {
 lab=mixer_b1}
 N -0 50 0 110 {
@@ -39,12 +37,6 @@ spiceprefix=X
 }
 C {devices/iopin.sym} -60 -100 0 0 {name=p1 lab=vdd}
 C {devices/opin.sym} 20 110 0 0 {name=p3 lab=mixer_b1}
-C {devices/lab_pin.sym} -120 -50 0 0 {name=l1 sig_type=std_logic lab=gnd}
-C {sky130_fd_pr/res_xhigh_po_0p35.sym} -60 -50 0 0 {name=R1
-W=0.35
-L=1.5
-model=res_xhigh_po_0p35
-spiceprefix=X
-mult=1}
 C {devices/vsource.sym} -60 50 0 0 {name=Vsense value=0}
 C {devices/iopin.sym} -60 170 0 0 {name=p4 lab=gnd}
+C {devices/isource.sym} -60 -50 0 0 {name=I0 value=100u}
