@@ -47,17 +47,12 @@ def bias_width_func(idq):
     wval = round(refCurrent/idq)*lmin
     if wval < wmin: wval=wmin
     if wval > wmax_nofingers: wval=wmax_nofingers
-    #BUG WORKAROUND: avoid certain widths
-    if wval==2.4: wval=2.5
-    if wval==1.5: wval=1.4
     return wval
 
 def m23width_func(idq):
     wval = round(ibias/(2*idq))*lmin
     if wval < wmin: wval=wmin
     if wval > wmax: wval=wmax
-    #BUG WORKAROUND: avoid ceratin widths
-    if wval==9: wval=10
     return wval
 
 
@@ -65,9 +60,6 @@ def m4567width_func(idq):
     wval=round(ibias/(4*idq)*lmin/2)*2
     if(wval<wmin):wval=wmin
     if(wval>wmax):wval=wmax
-    #BUG workaround: avoid problems with model bins!
-    if(wval==8):wval=10
-    if(wval==4):wval=5
     return wval
 
 def m27finger_func(width):
