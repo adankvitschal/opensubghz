@@ -21,9 +21,9 @@ except error:
 carrier_frequency = 900e6
 base_frequency = 5e6
 delta_frequency = 1e6
-sim_endtime = 50 / base_frequency
+sim_endtime = 100 / base_frequency
 sim_settlingtime = 10 / base_frequency
-sim_timestep=1/(50*carrier_frequency)
+sim_timestep=1/(25*carrier_frequency)
 
 #Prepare plots
 #fig, axs = plt.subplots(2)
@@ -70,6 +70,10 @@ print(noise_results)
 
 # Read netlist
 print('Loading netlist...')
+ngspyce.cmd('set num_threads=16')
+ngspyce.cmd('set ngbehavior=hsa')
+ngspyce.cmd('set ng_nomodcheck')
+
 ngspyce.source(simdir+'mixer_transfer_tb.spice')
 
 loop=True
@@ -107,10 +111,13 @@ while(loop):
         or k<0:
             print('Arguments out of range')
             exit()
-        if power_results[i,j] > 0:
+        if power_results[i,j,k] > 0:
             print('Overwriting previous results:');
-            print('Power: %.2fmW Gain: %.2fdB IIP3: %.2fdB Noise: %.2fdBm'\
-                    %(1e3*power_results[i,j], gain_results[i,j], iip3_results[i,j], noise_results[i,j]))
+            print('Power: %.2fmW Gain: %.2fdB IIP3: %.2fdB Noise: %.2fdBm'%( \
+                1e3*power_results[i,j,k], \
+                gain_results[i,j,k], \
+                iip3_results[i,j,k], \
+                noise_results[i,j,k]))
     else:
         #Random point
         i=random.randint(0,mixer_params.i_range);
@@ -134,7 +141,7 @@ while(loop):
                 print('All points already calculated! exiting...')
                 exit()
 
-    resultFileName = 'mixer_ip3_%02d%02d%02d'%(i,j,k)
+    resultFileName = 'mixer_%02d%02d%02d'%(i,j,k)
     print('Simulation index: ' + resultFileName)
 
     print('Applying params...')
@@ -186,9 +193,7 @@ while(loop):
     power = 1.8*sim_ibias
     print('>> POWER: %.2f mW'%(power*1e3))
 
-    exit()
-
-    power_results[i,j] = power
+    power_results[i,j,k] = power
     np.save(power_results_filename, power_results)
 
     #Run noise analysis
@@ -202,7 +207,7 @@ while(loop):
 
     print('>>Total Noise: onoise={}V / {} dBm'.format(onoise, totalNoise_dbm))
 
-    noise_results[i,j] = totalNoise_dbm
+    noise_results[i,j,k] = totalNoise_dbm
     np.save(noise_results_filename, noise_results)
 
     #input_amplitudes = [5e-3,10e-3,20e-3,50e-3,100e-3,500e-3]
@@ -212,8 +217,11 @@ while(loop):
     linearResponse_vec = []
     cubicResponse_vec = []
 
+    print('Starting IIP3 sequence of TRAN simulations...')
+    simindex = 0;
     for ivin in input_amplitudes:
-        print('Simulation for vin={}mV'.format(1e3*ivin))
+        simindex += 1
+        print('Simulation {}/{}: vin={}mV'.format(simindex, len(input_amplitudes), 1e3*ivin))
         ngspyce.alterparams(
             vin1_amplitude=ivin,
             vin2_amplitude=ivin)
@@ -223,7 +231,7 @@ while(loop):
         start_time = time.time()
         ngspyce.cmd(tran_command)
         end_time = time.time();
-        print('Simulation completed in {}s'.format(end_time-start_time))
+        print('SIMTIME: Simulation completed in {}s'.format(end_time-start_time))
 
         time_vector = ngspyce.vector('time')
         vout_vector = ngspyce.vector('outp') - ngspyce.vector('outn')
@@ -235,9 +243,20 @@ while(loop):
         sp = np.fft.fft(vout_vector)
         freq = np.fft.fftfreq(time_vector.size, d=sim_timestep)
         end_time = time.time()
-        print('FFT done in {}ms'.format(1e3*(end_time-start_time)))
+        #print('FFT done in {}ms'.format(1e3*(end_time-start_time)))
         amplitudes = (2/time_vector.size)*np.abs(sp)
         #axs[1].semilogy(freq, amplitudes*1e3, label='m23w={}'.format(m23width))
+
+        #Store only first FFT result
+        if simindex==1:
+            tran_results = np.vstack((time_vector, vout_vector)) 
+            tran_filename = simdir+resultFileName+'_tran_vin%.0f.npy'%(1e3*ivin)
+            print('Storing TRAN results to file: {}'.format(tran_filename))
+            np.save(tran_filename, tran_results)
+            fft_results = np.vstack((freq, amplitudes))
+            fft_filename = simdir+resultFileName+'_fft_vin%.0f.npy'%(1e3*ivin)
+            print('Storing FFT results to file: {}'.format(fft_filename))
+            np.save(fft_filename, fft_results)
 
         indexBaseFreq = utils.indexof(freq, base_frequency)
         indexCubicResponse = utils.indexof(freq, base_frequency+2*delta_frequency)
@@ -264,7 +283,7 @@ while(loop):
     cubicResponse_vec = np.array(cubicResponse_vec)
 
     #Store gain at least amplitude
-    gain_results[i,j] = gain_db_vec[0]
+    gain_results[i,j,k] = gain_db_vec[0]
     np.save(gain_results_filename, gain_results)
 
     #Calculate IP3 point
@@ -288,7 +307,7 @@ while(loop):
     oip3 = a1*iip3+b1
     print('IIP3: {} dBm OIP3: {} dBm'.format(iip3, oip3))
 
-    iip3_results[i,j] = iip3
+    iip3_results[i,j,k] = iip3
     np.save(iip3_results_filename, iip3_results)
 
     #Prepare IP3 plot
@@ -299,7 +318,7 @@ while(loop):
 
     #axs[0].legend()
     #axs[1].legend()
-    plt.savefig(simdir+resultFileName+'.png')
+    plt.savefig(simdir+resultFileName+'_iip3.png')
 
 plt.show()
 
