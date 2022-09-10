@@ -1,4 +1,4 @@
-v {xschem version=3.0.0 file_version=1.2 }
+v {xschem version=3.1.0 file_version=1.2 }
 G {}
 K {name=half_qvco_subckt
 type=subcircuit
@@ -54,3 +54,4 @@ T {gnd} 10 -110 1 0 0.4 0.4 {}
 T {bias} 40 -110 1 0 0.4 0.4 {}
 T {vtune} 30 60 0 1 0.4 0.4 {}
 T {@name} 70 70 0 0 0.4 0.4 {}
+T {P} 40 60 0 0 0.4 0.4 {}
