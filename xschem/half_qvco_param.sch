@@ -22,15 +22,11 @@ N 0 130 0 150 {
 lab=cm0}
 N -120 130 120 130 {
 lab=cm0}
-N 0 -250 0 -220 {
-lab=vtune}
 N -150 -230 -120 -230 {
 lab=Q_p}
 N 120 -230 150 -230 {
 lab=Q_n}
-N -40 -220 40 -220 {
-lab=vtune}
-N -0 -170 0 -140 {
+N 0 -190 0 -160 {
 lab=gnd}
 N 160 -100 190 -100 {
 lab=I_p}
@@ -46,8 +42,6 @@ N -60 -150 40 0 {
 lab=Q_p}
 N -120 -150 -60 -150 {
 lab=Q_p}
-N -80 -170 80 -170 {
-lab=gnd}
 N -120 -230 -80 -230 {
 lab=Q_p}
 N 80 -230 120 -230 {
@@ -74,6 +68,12 @@ N 120 -390 120 -310 {
 lab=#net5}
 N -120 -390 -120 -310 {
 lab=#net4}
+N -20 -230 20 -230 {
+lab=vtune}
+N -30 -190 30 -190 {
+lab=gnd}
+N -0 -250 0 -230 {
+lab=vtune}
 C {sky130_fd_pr/nfet3_01v8.sym} 100 0 0 0 {name=M1
 L=0.15
 W="'m12_width'"
@@ -104,8 +104,8 @@ sa=0 sb=0 sd=0
 model=nfet_01v8
 spiceprefix=X
 }
-C {sky130_fd_pr/cap_var_lvt.sym} 80 -200 2 1 {name=C1 model=cap_var_lvt W="'capvar_width'" L="'capvar_length'" VM="'capvar_mult'" spiceprefix=X}
-C {sky130_fd_pr/cap_var_lvt.sym} -80 -200 2 0 {name=C2 model=cap_var_lvt W="'capvar_width'" L="'capvar_length'" VM="'capvar_mult'" spiceprefix=X}
+C {sky130_fd_pr/cap_var_lvt.sym} 50 -230 1 1 {name=C1 model=cap_var_lvt W="'capvar_width'" L="'capvar_length'" VM="'capvar_mult'" spiceprefix=X}
+C {sky130_fd_pr/cap_var_lvt.sym} -50 -230 3 0 {name=C2 model=cap_var_lvt W="'capvar_width'" L="'capvar_length'" VM="'capvar_mult'" spiceprefix=X}
 C {devices/iopin.sym} 0 -440 0 0 {name=p1 lab=vdd}
 C {devices/iopin.sym} 0 320 0 0 {name=p2 lab=gnd}
 C {sky130_fd_pr/nfet3_01v8.sym} -20 260 0 0 {name=M5
@@ -159,7 +159,7 @@ C {devices/opin.sym} -150 -230 0 1 {name=p6 lab=Q_p}
 C {devices/opin.sym} 150 -230 0 0 {name=p7 lab=Q_n}
 C {devices/ipin.sym} 190 -100 0 1 {name=p8 lab=I_p}
 C {devices/ipin.sym} 0 -250 3 1 {name=p3 lab=vtune}
-C {devices/lab_pin.sym} 0 -140 0 0 {name=l1 sig_type=std_logic lab=gnd}
+C {devices/lab_pin.sym} 0 -160 0 0 {name=l1 sig_type=std_logic lab=vdd}
 C {devices/vsource.sym} 0 180 0 0 {name=Vsense1 value=0}
 C {devices/vsource.sym} -120 80 0 0 {name=Vsense2a value=0}
 C {devices/vsource.sym} 120 80 0 0 {name=Vsense2b value=0}
@@ -170,5 +170,5 @@ C {devices/vsource.sym} 120 -280 0 0 {name=Vsense3b value=0}
 C {devices/vsource.sym} -120 -280 0 0 {name=Vsense3a value=0}
 C {devices/lab_pin.sym} 0 -330 0 0 {name=l2 sig_type=std_logic lab=gnd}
 C {opensubghz/xschem/coil_inductor.sym} 0 -390 2 0 {name=XL1
-model=sky130_fd_pr__ind_03_90
+model=sky130_fd_pr__ind_05_125
 spiceprefix=X}
