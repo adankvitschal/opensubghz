@@ -104,7 +104,7 @@ if os.path.exists(results_filepath):
     print('Results file already exists, please remove it to generate a new one')
     exit()
 
-results = pd.DataFrame(0, index=np.arange(len(params.index)), columns=['simtime', 'power', 'min_freq', 'max_freq', 'max_aplitude', 'start_time', 'amplitude915'])
+results = pd.DataFrame(0, index=np.arange(len(params.index)), columns=['simtime', 'power', 'min_freq', 'max_freq', 'max_aplitude', 'max_voltage', 'start_time', 'amplitude915'])
 
 print(results)
 

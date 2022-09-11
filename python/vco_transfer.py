@@ -27,12 +27,12 @@ tran_timestep=1/(250*carrier_frequency)
 
 #Load VCO params and results files
 print('Loading circuit parameters CSV')
-params = pd.read_csv(simdir+'vco_params.csv')
+params = pd.read_csv(simdir+'vco_params.csv', index_col=0)
 print(params)
 
 print('Loading circuit results CSV')
 results_filename = simdir+'vco_results.csv'
-results = pd.read_csv(results_filename)
+results = pd.read_csv(results_filename, index_col=0)
 print(results)
 
 # Read netlist
@@ -74,11 +74,7 @@ while(loop):
 
         if results.at[index, 'simtime'] > 0:
             print('Overwriting previous results:');
-            print('Power: %.2fmW Gain: %.2fdB IIP3: %.2fdB Noise: %.2fdBm'%( \
-                1e3*power_results[i,j,k], \
-                gain_results[i,j,k], \
-                iip3_results[i,j,k], \
-                noise_results[i,j,k]))
+            print(results.iloc[index])
     else:
         #Choose a random specimen to simulate
         index=random.randint(0,len(params.index)-1);
@@ -157,6 +153,8 @@ while(loop):
     minfreq_result = 0
     maxfreq_result = 0
     amplitude_result = 0
+    max_voltage_result = 0
+    
     for vtune in vtune_points:
         simindex += 1
         print('Simulation {}/{}: vtune={}mV'.format(simindex, len(vtune_points), 1e3*vtune))
@@ -171,7 +169,19 @@ while(loop):
         print('SIMTIME: Simulation completed in {}s'.format(end_time-start_time))
 
         time_vector = ngspyce.vector('time')
-        vout_vector = ngspyce.vector('ip') - ngspyce.vector('in')
+        ip_vector = ngspyce.vector('ip')
+        in_vector = ngspyce.vector('in')
+        
+        #Store maximum values
+        ip_max = np.amax(ip_vector)
+        in_max = np.amax(ip_vector)
+        
+        if ip_max > max_voltage_result:
+            max_voltage_result = ip_max
+        if in_max > max_voltage_result:
+            max_voltage_result = in_max
+        
+        vout_vector = ip_vector - in_vector
 
         #plt.plot(time_vector, vout_vector)
         #plt.show()
@@ -185,8 +195,9 @@ while(loop):
         amplitudes = (2/time_vector.size)*np.abs(sp)
 
         #drop negative half
-        positive_amplitudes = np.split(amplitudes, 2)[0]
-        positive_freq = np.split(freq,2)[0]
+        mean_index = math.floor(len(freq)/2)
+        positive_amplitudes = amplitudes[:mean_index]
+        positive_freq = freq[:mean_index]
 
         #plt.semilogy(positive_freq, positive_amplitudes)
         #plt.show()
@@ -204,9 +215,9 @@ while(loop):
         #    np.save(fft_filename, fft_results)
 
         #Get max peak of fft and store as result
-        index_mainfreq = np.argmax(amplitudes)
-        mainfreq = freq[index_mainfreq]
-        mainfreq_amplitude = amplitudes[index_mainfreq]
+        index_mainfreq = np.argmax(positive_amplitudes)
+        mainfreq = positive_freq[index_mainfreq]
+        mainfreq_amplitude = positive_amplitudes[index_mainfreq]
 
         print('Main Frequency: %fMHz Amplitude: %f'%(mainfreq/1e6, mainfreq_amplitude))
 
@@ -228,19 +239,20 @@ while(loop):
     #plt.plot(vtune_points, amplitude_vec, label='amplitude')
     plt.plot(vtune_points, mainfreq_vec, label='frequency')
 
-    plt.savefig(simdir+'vco%d_transfer.png')
+    plt.savefig(simdir+'vco%d_transfer.png'%(index))
 
     #Reload, update and results
-    results = pd.read_csv(results_filename)
+    results = pd.read_csv(results_filename, index_col=0)
     results.at[index, 'simtime'] = time.time() - sim_start
     results.at[index, 'power'] = power_result
     results.at[index, 'min_freq'] = minfreq_result
     results.at[index, 'max_freq'] = maxfreq_result
     results.at[index, 'max_amplitude'] = amplitude_result
+    results.at[index, 'max_voltage'] = max_voltage_result
 
-    print(results.iloc(index))
+    print(results.iloc[index])
 
-    result.to_csv(results_filename)
+    results.to_csv(results_filename)
 
 plt.show()
 
